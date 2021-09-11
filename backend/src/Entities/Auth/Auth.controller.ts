@@ -30,11 +30,11 @@ export default {
       return res.status(202).json({ accessToken, refreshToken })
     } catch (error) {
       if (error.message === 'Invalid username or password')
-        res.status(400).send({ error: error.message })
+        return res.status(400).send({ error: error.message })
       if (error.message === 'Email or password is missing')
-        res.status(400).send({ error: error.message })
+        return res.status(400).send({ error: error.message })
       if (error.message === 'User is not verified')
-        res.status(401).send({ error: error.message })
+        return res.status(401).send({ error: error.message })
       return res.status(500).json({ error: error.message })
     }
   },
