@@ -1,12 +1,12 @@
 import jwt from 'jsonwebtoken'
 import bcrypt from 'bcrypt'
 import database from '../../Database/client'
-import { Trainer } from '.prisma/client'
+import { User } from '.prisma/client'
 
 let refreshTokens = []
 
 export default {
-  async createUser(data:Trainer) {
+  async createUser(data:User) {
     const userExists = await this.doesUserExist(data.email)
     if (userExists) throw new Error('User already exists')
 
@@ -15,14 +15,20 @@ export default {
     data.password = hashedPassword
 
     delete data.id
-    const user = await database.trainer.create({data})
+    delete data.createdAt
+    delete data.updatedAt
+
+    const user = await database.user.create({data})
+    delete user.password
     return user
   },
 
   async generateAccessToken(user) {
-    return await jwt.sign(user, process.env.ACCESS_TOKEN_SECRET, {
+    const accessToken = await jwt.sign(user, process.env.ACCESS_TOKEN_SECRET, {
       expiresIn: '1200s'
     })
+    if (!accessToken) throw new Error('Error generating access token')
+    return accessToken
   },
 
   async generateRefreshToken(user) {
@@ -32,7 +38,10 @@ export default {
   },
 
   async doesRefreshTokenExist(token) {
-    return await refreshTokens.includes(token)
+    if (token == null) throw new Error('No token provided')
+    const exists =  await refreshTokens.includes(token)
+    if (!exists) throw new Error('Invalid token')
+    return exists
   },
 
   async getUserFromRefreshToken(token) {
@@ -44,6 +53,7 @@ export default {
         return user
       }
     )
+    if (user == null) throw new Error('Invalid token')
     return user
   },
 
@@ -52,7 +62,7 @@ export default {
   },
 
   async doesUserExist(email) {
-    const user = await database.trainer.findFirst({
+    const user = await database.user.findFirst({
       where: {
         email: email
       }
