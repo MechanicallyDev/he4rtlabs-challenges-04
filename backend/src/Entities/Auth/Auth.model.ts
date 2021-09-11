@@ -84,6 +84,8 @@ export default {
     const user = await this.doesUserExist(email)
     if (!user) throw new Error('Invalid username or password' )
 
+    if (user.isVerified === false) throw new Error('User is not verified')
+
     const isPasswordValid = await this.comparePassword(password, user.password)
     if (!isPasswordValid) throw new Error('Invalid username or password' )
     delete user.password
