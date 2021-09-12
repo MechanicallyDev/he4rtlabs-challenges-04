@@ -6,8 +6,8 @@ export default function Screen(props) {
 
   const brightnessClamp = Clamp(7, 100, brightness)
   const brightnessHEX = PercentageToHEX(brightnessClamp)
-  const brightnessLerp = Lerp(60,80,brightnessClamp)
-  
+  const brightnessLerp = Lerp(60, 80, brightnessClamp)
+
   return (
     <ScreenStyled
       brightness={brightnessHEX}
@@ -40,7 +40,61 @@ const ScreenStyled = styled.div`
   font-size: 2vh;
   line-height: 1.6vh;
   font-weight: 700;
-  overflow: hidden;
   box-shadow: inset -2vh 0px 20vh var(--color-brightness-hover),
-    0px 0px 3vh var(--color-brightness-hover), inset .2vh .2vh .8vh #000000aa;
+    0px 0px 3vh var(--color-brightness-hover),
+    inset 0.2vh 0.2vh 0.8vh #000000aa;
+
+  .hinge1 {
+    position: absolute;
+    left: 50%;
+    transform: translate(-50%, -8vh) translateX(-12vh);
+    z-index: 10;
+    background: linear-gradient(
+      to bottom,
+      #ff4d4d 0%,
+      #dd4d4d 75%,
+      #6e3838 100%
+    );
+    border: 0.3vh solid rgba(0, 0, 0, 0.1);
+    border-top: 0;
+    border-bottom: 0;
+    border-radius: 0.4vh;
+    height: 4vh;
+    width: 4vh;
+    box-shadow: 0.2vh 0.2vh 0.4vh #00000077;
+
+    @media (orientation: landscape) and (min-width: 200vh) {
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%) translateY(-18vh) rotateZ(-90deg);
+      box-shadow: -0.2vh 0.2vh 0.4vh #00000077;
+    }
+  }
+
+  .hinge2 {
+    position: absolute;
+    left: 50%;
+    transform: translate(-50%, -8vh) translateX(+12vh);
+    z-index: 10;
+    background: linear-gradient(
+      to bottom,
+      #ff4d4d 0%,
+      #dd4d4d 75%,
+      #6e3838 100%
+    );
+    border: 0.3vh solid rgba(0, 0, 0, 0.1);
+    border-top: 0;
+    border-bottom: 0;
+    border-radius: 0.4vh;
+    height: 4vh;
+    width: 4vh;
+    box-shadow: 0.2vh 0.2vh 0.4vh #00000077;
+
+    @media (orientation: landscape) and (min-width: 200vh) {
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%) translateY(18vh) rotateZ(-90deg);
+      box-shadow: -0.2vh 0.2vh 0.4vh #00000077;
+    }
+  }
 `
