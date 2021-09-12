@@ -1,5 +1,5 @@
 import * as notes from 'gameboy-sound';
-import data from './songData';
+import data from './Route4Song';
 
 const lines = data.split('\n').map(line => line.trim()).filter(line => line.length > 0);
 let track = [];

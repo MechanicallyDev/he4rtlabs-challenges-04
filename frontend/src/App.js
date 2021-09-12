@@ -3,7 +3,7 @@ import styled from 'styled-components'
 import * as gb from 'gameboy-sound'
 
 import Screen from './Components/Screen'
-import { tracks } from './Songs/song'
+import { tracks } from './Songs/Player'
 
 function App() {
   const [started, setStarted] = useState(false)
@@ -14,9 +14,17 @@ function App() {
     setStarted(true)
     if (!isMusicPlaying) {
       gb.allow()
+      gb.changeUserVolume(10/100)
       gb.playAll(tracks)
       setMusicPlaying(true)
     }
+  }
+
+  function playBeep() {
+    gb.play(0, [
+      { freq: gb.C4, sweepFactor: -2, fade: 1, duty: 2 },
+      0.5
+    ]);
   }
 
   return (
@@ -27,6 +35,7 @@ function App() {
         {started && (<><Machine>
           <Screen brightness={brightness}>
             <h1>Pokedex</h1>
+            <button onClick={() => playBeep()}>Beeep</button>
           </Screen>
         </Machine>
         <Machine>
