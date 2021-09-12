@@ -33,7 +33,7 @@ const ScreenStyled = styled.div`
     #7e914a var(--brightness),
     #8c9d47 100%
   );
-  border: 4px solid #6e3838;
+  border: .4vh solid #6e3838;
   border-bottom: 0;
   border-right: 0;
   border-radius: 1vh;
