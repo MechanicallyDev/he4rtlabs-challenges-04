@@ -1,11 +1,12 @@
 import { useState } from 'react'
 import styled from 'styled-components'
-import * as gb from 'gameboy-sound'
 
-import Screen from './Components/Screen'
+import * as music from 'gameboy-sound'
 import { tracks } from './Songs/Player'
 
-function App() {
+import Device from './Components/Device'
+
+function Pokedex() {
   const [started, setStarted] = useState(false)
   const [isMusicPlaying, setMusicPlaying] = useState(false)
   const [brightness, setBrightness] = useState(50)
@@ -13,44 +14,41 @@ function App() {
   function handleStart() {
     setStarted(true)
     if (!isMusicPlaying) {
-      gb.allow()
-      gb.changeUserVolume(10/100)
-      gb.playAll(tracks)
+      music.allow()
+      music.changeUserVolume(10 / 100)
+      music.playAll(tracks)
       setMusicPlaying(true)
     }
   }
 
-  function playBeep() {
-    gb.play(0, [
-      { freq: gb.C4, sweepFactor: -2, fade: 1, duty: 2 },
-      0.5
-    ]);
-  }
-
   return (
-    <Background>
+    <>
+      <Background />
       <Container>
-        {!started && <StartButton onClick={() => handleStart()}>Iniciar Pokedex</StartButton>}
+        {!started && (
+          <StartButton onClick={() => handleStart()}>
+            Iniciar Pokedex
+          </StartButton>
+        )}
 
-        {started && (<><Machine>
-          <Screen brightness={brightness}>
-            <h1>Pokedex</h1>
-            <button onClick={() => playBeep()}>Beeep</button>
-          </Screen>
-        </Machine>
-        <Machine>
-          <Screen brightness={brightness}>
-            <div className="hinge1"/>
-            <div className="hinge2"/>
-            <h1>Pokedex</h1>
-          </Screen>
-        </Machine></>)}
+        {started && (
+          <>
+              <Device brightness={brightness}>
+                <h1>Pokedex</h1>
+              </Device>
+              <Device brightness={brightness}>
+                <div className='hinge1' />
+                <div className='hinge2' />
+                <h1>Pokedex</h1>
+              </Device>
+          </>
+        )}
       </Container>
-    </Background>
+    </>
   )
 }
 
-export default App
+export default Pokedex
 
 const StartButton = styled.button`
   box-shadow: inset 0px 1px 0px 0px #cf866c;
@@ -87,9 +85,20 @@ const Background = styled.div`
   right: 0;
 
   background: url(background.png);
-  background-repeat: no-repeat;
+  background-repeat: repeat;
   background-position-y: 70%;
   background-size: cover;
+  animation: animatedBackground 10000s linear infinite;
+
+
+@keyframes animatedBackground {
+  from {
+    background-position: 0 70%;
+  }
+  to {
+    background-position: -140000px 70%;
+  }
+}
 `
 
 const Container = styled.div`
@@ -119,14 +128,3 @@ const Container = styled.div`
   }
 `
 
-const Machine = styled.div`
-  background-color: #dd4d4d;
-  box-shadow: 0.5vh 1vh 0vh #9e3838;
-  width: 100%;
-  height: 90vh;
-  border-radius: 2vh;
-  padding: 1vh;
-  display: flex;
-  flex-direction: column;
-  border: 0.3vh solid rgba(255, 255, 255, 0.1);
-`

@@ -1,7 +1,7 @@
 import styled from 'styled-components'
 import { Clamp, Lerp, PercentageToHEX } from '../Utils/MathFunctions'
 
-export default function Screen(props) {
+export default function Device(props) {
   const { brightness = 50, children } = props
 
   const brightnessClamp = Clamp(7, 100, brightness)
@@ -9,12 +9,14 @@ export default function Screen(props) {
   const brightnessLerp = Lerp(60, 80, brightnessClamp)
 
   return (
-    <ScreenStyled
-      brightness={brightnessHEX}
-      brightnessPercentage={brightnessLerp}
-    >
-      {children}
-    </ScreenStyled>
+    <Machine>
+      <ScreenStyled
+        brightness={brightnessHEX}
+        brightnessPercentage={brightnessLerp}
+      >
+        {children}
+      </ScreenStyled>
+    </Machine>
   )
 }
 
@@ -41,8 +43,7 @@ const ScreenStyled = styled.div`
   line-height: 1.6vh;
   font-weight: 700;
   box-shadow: inset -2vh 0px 20vh var(--color-brightness-hover),
-    0px 0px 3vh var(--color-brightness-hover),
-    inset 0.2vh 0.2vh 0.8vh #000000aa;
+    0px 0px 3vh var(--color-brightness-hover), inset 0.2vh 0.2vh 0.8vh #000000aa;
 
   .hinge1 {
     position: absolute;
@@ -97,4 +98,16 @@ const ScreenStyled = styled.div`
       box-shadow: -0.2vh 0.2vh 0.4vh #00000077;
     }
   }
+`
+
+const Machine = styled.div`
+  background-color: #dd4d4d;
+  box-shadow: 0.5vh 1vh 0vh #9e3838;
+  width: 100%;
+  height: 90vh;
+  border-radius: 2vh;
+  padding: 1vh;
+  display: flex;
+  flex-direction: column;
+  border: 0.3vh solid rgba(255, 255, 255, 0.1);
 `
