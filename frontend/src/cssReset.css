@@ -5,6 +5,11 @@
 
 * {
 	box-sizing: border-box;
+	font-family: 'Press Start 2P', cursive;
+}
+
+html {
+	background: #80AF72;
 }
 
 html, body, div, span, applet, object, iframe,
@@ -26,6 +31,7 @@ time, mark, audio, video {
 	font-size: 100%;
 	font: inherit;
 	vertical-align: baseline;
+	font-family: 'Press Start 2P', cursive;
 }
 /* HTML5 display-role reset for older browsers */
 article, aside, details, figcaption, figure, 
