@@ -4,7 +4,7 @@ import styled from 'styled-components'
 import Screen from './Components/Screen'
 
 function App() {
-  const [brightness, setBrightness] = useState(70)
+  const [brightness, setBrightness] = useState(100)
   return (
     <Background>
       <Container>
@@ -68,17 +68,12 @@ const Container = styled.div`
 
 const Machine = styled.div`
   background-color: #dd4d4d;
-  box-shadow: 5px 10px 0px #9e3838;
+  box-shadow: .5vh 1vh 0vh #9e3838;
   width: 100%;
   height: 90vh;
   border-radius: 2vh;
   padding: 1vh;
   display: flex;
   flex-direction: column;
-  border: 4px solid rgba(255, 255, 255, 0.15);
-
-  @media (min-width: 1200px) {
-    background-color: #dd4d4d;
-    box-shadow: 5px 10px 0px #9e3838;
-  }
+  border: .3vh solid rgba(255, 255, 255, 0.10);
 `
