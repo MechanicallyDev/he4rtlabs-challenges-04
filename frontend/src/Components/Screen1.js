@@ -24,9 +24,9 @@ function DialogBar(props) {
     <>
       <div style={{display:'flex'}}>
         <span>Speed: </span>
-        <button onClick={() => setDialogSpeed(1)}>Slow</button>
-        <button onClick={() => setDialogSpeed(1.5)}>Regular</button>
-        <button onClick={() => setDialogSpeed(2)}>Fast</button>
+        <button onClick={() => setDialogSpeed(.5)}>Slow</button>
+        <button onClick={() => setDialogSpeed(1)}>Regular</button>
+        <button onClick={() => setDialogSpeed(1.5)}>Fast</button>
       </div>
       <div style={{display:'flex'}}>
         <span>Frequency: </span>
