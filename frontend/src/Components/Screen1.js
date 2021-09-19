@@ -3,20 +3,23 @@ import styled from 'styled-components'
 import Reader from '../Reader/Reader'
 
 const dialog = `Oi, como vai você?
-Espero que esteja bem!`
+Espero que esteja bem!
+Testando coisas aleatórias: 1. 2. 3. 4. 5. 121345.
+É, parece que funcionou!
+`
 
 function DialogBar(props) {
-  const [typedDialog, setTypedDialog] = useState('')
+  const [typedDialog, setTypedDialog] = useState(``)
 
-  function ShowDialog() {
-    setTypedDialog('')
-    Reader(dialog, 1, word => {
-      setTypedDialog(word)
+  function ShowDialog(text, speed, voice) {
+    setTypedDialog(``)
+    Reader(text, speed, voice, phrase => {
+      setTypedDialog(phrase)
     })
   }
   return (
     <>
-      <button onClick={() => ShowDialog()}>show dialog</button>
+      <button onClick={() => ShowDialog(dialog, 1.2, 150)}>show dialog</button>
       <DialogBarStyled>{typedDialog}</DialogBarStyled>
     </>
   )

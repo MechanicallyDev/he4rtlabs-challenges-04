@@ -38,40 +38,47 @@ const timedQueue = (function () {
   })
 })()
 
-function Reader(sentence, speed = 1, callback) {
+function Reader(sentence, speed = 1, baseFreq, callback) {
   const voice = new Tone.FMSynth().toDestination()
 
   function addSoundOnQueue(note, duration, delay, word) {
     timedQueue.add(() => {
-      voice.triggerAttackRelease(note, duration)
+      voice.triggerAttackRelease(baseFreq+note, duration)
       callback(word)
+    }, duration)
+    timedQueue.add(() => {
+      
     }, delay)
   }
 
-  const phrase = sentence.match(/([a-zA-Z\u00C0-\u00FF])+|\.|,|\!|\?/gi) /// /[a-zA-Z\u00C0-\u00FF ]+/i
-  let returnPhrase = ''
+  const phrase = sentence.match(/([a-zA-Z0-9\:\u00C0-\u00FF])+|\n|\.|,|\!|\?/gi) /// /[a-zA-Z\u00C0-\u00FF ]+/i
+  let returnPhrase = ``
   phrase.forEach(word => {
     let size = word.length / speed
     const isExclamation = word==="!";
     const isInterrogation = word==="?";
     const isDot = word===".";
     const isComma = word===",";
+    const isLineBreak = word==="\n";
     
     if (isInterrogation) {
       returnPhrase += word
-      addSoundOnQueue('E3', size / 30, 100 * size, returnPhrase)
+      addSoundOnQueue(baseFreq*0.3, size / 100, 500 * size, returnPhrase)
     } else if (isExclamation) {
       returnPhrase += word
-      addSoundOnQueue('D3', size / 30, 100 * size, returnPhrase)
+      addSoundOnQueue(baseFreq*-0.15, size / 100, 500 * size, returnPhrase)
     } else if (isComma) {
       returnPhrase += word
-      addSoundOnQueue('B3', size / 30, 150 * size, returnPhrase)
+      addSoundOnQueue(baseFreq*-0.1, 0, 400 * size, returnPhrase)
     } else if (isDot) {
       returnPhrase += word
-      addSoundOnQueue('B3', size / 30, 150 * size, returnPhrase)
+      addSoundOnQueue(baseFreq*-0.1, size / 30, 400 * size, returnPhrase)
+    } else if (isLineBreak) {
+      returnPhrase += word
+      addSoundOnQueue(baseFreq*1, 0, 400 * size, returnPhrase)
     } else {
       returnPhrase += ` `+word
-      addSoundOnQueue('C3', size / 30, 50 * size, returnPhrase)
+      addSoundOnQueue(baseFreq*0, size / 50, 50 * size, returnPhrase)
     }
   })
   timedQueue.start()
