@@ -1,24 +1,27 @@
 import { useState } from 'react'
 import styled from 'styled-components'
 
-import * as music from 'gameboy-sound'
-import { tracks } from './Songs/Player'
-
 import Device from './Components/Device'
+import { useMusic } from './Contexts/MusicContext'
 
 function Pokedex() {
+  const music = useMusic()
+
   const [started, setStarted] = useState(false)
-  const [isMusicPlaying, setMusicPlaying] = useState(false)
+
   const [brightness, setBrightness] = useState(50)
+
+  function HandleChangeMusic(song) {
+    music.playMusic(song)
+  }
+
+  function HandleStopMusic(){
+    music.stopMusic()
+  }
 
   function handleStart() {
     setStarted(true)
-    if (!isMusicPlaying) {
-      music.allow()
-      music.changeUserVolume(10 / 100)
-      music.playAll(tracks)
-      setMusicPlaying(true)
-    }
+    HandleChangeMusic('pallet')
   }
 
   return (
@@ -33,14 +36,35 @@ function Pokedex() {
 
         {started && (
           <>
-              <Device brightness={brightness}>
-                <h1>Pokedex</h1>
-              </Device>
-              <Device brightness={brightness}>
-                <div className='hinge1' />
-                <div className='hinge2' />
-                <h1>Pokedex</h1>
-              </Device>
+            <Device brightness={brightness}>
+              <button
+                style={{
+                  background: 'transparent',
+                  border: 'none',
+                  cursor: 'pointer',
+                  textDecorationLine: 'underline',
+                }}
+                onClick={() => HandleStopMusic()}
+              >
+                Stop Music
+              </button>
+              <button
+                style={{
+                  background: 'transparent',
+                  border: 'none',
+                  cursor: 'pointer',
+                  textDecorationLine: 'underline',
+                }}
+                onClick={() => HandleChangeMusic('titlescreen')}
+              >
+                start Music
+              </button>
+            </Device>
+            <Device brightness={brightness}>
+              <div className='hinge1' />
+              <div className='hinge2' />
+              <h1>Pokedex</h1>
+            </Device>
           </>
         )}
       </Container>
@@ -90,15 +114,14 @@ const Background = styled.div`
   background-size: cover;
   animation: animatedBackground 10000s linear infinite;
 
-
-@keyframes animatedBackground {
-  from {
-    background-position: 0 70%;
+  @keyframes animatedBackground {
+    from {
+      background-position: 0 70%;
+    }
+    to {
+      background-position: -140000px 70%;
+    }
   }
-  to {
-    background-position: -140000px 70%;
-  }
-}
 `
 
 const Container = styled.div`
@@ -127,4 +150,3 @@ const Container = styled.div`
     width: 200vh;
   }
 `
-
