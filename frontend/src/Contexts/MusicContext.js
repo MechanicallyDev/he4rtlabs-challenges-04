@@ -7,7 +7,7 @@ export const MusicContext = createContext({})
 
 export function MusicProvider({ children }) {
   const [isMusicPlaying, setMusicPlaying] = useState(true)
-
+  const [musicVolume, setMusicVolume] = useState(-12)
   let synths = []
   
   function stopMusic() {
@@ -28,6 +28,7 @@ export function MusicProvider({ children }) {
     if (song && Tone.Transport.state === 'stopped') {
       song.tracks.forEach((track, index) => {
         synths[index] = new Tone.Synth().toDestination()
+        synths[index].volume.value = musicVolume;
         const part = new Tone.Part((time, note) => {
           synths[index].triggerAttackRelease(
             note.name,

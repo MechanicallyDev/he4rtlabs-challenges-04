@@ -2,6 +2,8 @@ import { useState } from 'react'
 import styled from 'styled-components'
 
 import Device from './Components/Device'
+import Screen1 from './Components/Screen1'
+import Screen2 from './Components/Screen2'
 import { useMusic } from './Contexts/MusicContext'
 
 function Pokedex() {
@@ -11,17 +13,9 @@ function Pokedex() {
 
   const [brightness, setBrightness] = useState(50)
 
-  function HandleChangeMusic(song) {
-    music.playMusic(song)
-  }
-
-  function HandleStopMusic(){
-    music.stopMusic()
-  }
-
   function handleStart() {
     setStarted(true)
-    HandleChangeMusic('pallet')
+    music.playMusic('pallet')
   }
 
   return (
@@ -37,33 +31,12 @@ function Pokedex() {
         {started && (
           <>
             <Device brightness={brightness}>
-              <button
-                style={{
-                  background: 'transparent',
-                  border: 'none',
-                  cursor: 'pointer',
-                  textDecorationLine: 'underline',
-                }}
-                onClick={() => HandleStopMusic()}
-              >
-                Stop Music
-              </button>
-              <button
-                style={{
-                  background: 'transparent',
-                  border: 'none',
-                  cursor: 'pointer',
-                  textDecorationLine: 'underline',
-                }}
-                onClick={() => HandleChangeMusic('titlescreen')}
-              >
-                start Music
-              </button>
+              <Screen1/>
             </Device>
             <Device brightness={brightness}>
               <div className='hinge1' />
               <div className='hinge2' />
-              <h1>Pokedex</h1>
+              <Screen2/>
             </Device>
           </>
         )}
