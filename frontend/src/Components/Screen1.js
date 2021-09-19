@@ -10,6 +10,8 @@ Testando coisas aleatórias: 1. 2. 3. 4. 5. 121345.
 
 function DialogBar(props) {
   const [typedDialog, setTypedDialog] = useState(``)
+  const [dialogSpeed, setDialogSpeed] = useState(1)
+  const [frequency, setFrequency] = useState(150)
 
   function ShowDialog(text, speed, voice) {
     setTypedDialog(``)
@@ -17,9 +19,22 @@ function DialogBar(props) {
       setTypedDialog(phrase)
     })
   }
+
   return (
     <>
-      <button onClick={() => ShowDialog(dialog, 1.2, 150)}>show dialog</button>
+      <div style={{display:'flex'}}>
+        <span>Speed: </span>
+        <button onClick={() => setDialogSpeed(1)}>Slow</button>
+        <button onClick={() => setDialogSpeed(1.5)}>Regular</button>
+        <button onClick={() => setDialogSpeed(2)}>Fast</button>
+      </div>
+      <div style={{display:'flex'}}>
+        <span>Frequency: </span>
+        <button onClick={() => setFrequency(frequency*(1-0.2))}>-</button>
+        <span>{Math.round(frequency)}</span>
+        <button onClick={() => setFrequency(frequency*(1+0.2))}>+</button>
+      </div>
+      <button onClick={() => ShowDialog(dialog, dialogSpeed, frequency)}>Start Dialog</button>
       <DialogBarStyled>{typedDialog}</DialogBarStyled>
     </>
   )

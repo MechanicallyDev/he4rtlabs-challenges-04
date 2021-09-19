@@ -38,7 +38,7 @@ const timedQueue = (function () {
   })
 })()
 
-function Reader(sentence, speed = 1, baseFreq, callback) {
+function Reader(sentence, speed, baseFreq, callback) {
   const voice = new Tone.FMSynth().toDestination()
 
   function addSoundOnQueue(note, duration, delay, word) {
@@ -54,7 +54,7 @@ function Reader(sentence, speed = 1, baseFreq, callback) {
   const phrase = sentence.match(/([a-zA-Z0-9\:\u00C0-\u00FF])+|\n|\.|,|\!|\?/gi) /// /[a-zA-Z\u00C0-\u00FF ]+/i
   let returnPhrase = ``
   phrase.forEach(word => {
-    let size = word.length / speed
+    let size = word.length / (1.5*speed)
     const isExclamation = word==="!";
     const isInterrogation = word==="?";
     const isDot = word===".";
