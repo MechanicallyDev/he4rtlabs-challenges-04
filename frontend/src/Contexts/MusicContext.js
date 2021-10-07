@@ -1,21 +1,23 @@
 import { useState, createContext, useContext } from 'react'
 import * as Tone from 'tone'
 
+import { useSettings } from './SettingsContext'
 import Songlist from '../Songs/Songlist'
 
 export const MusicContext = createContext({})
 
 export function MusicProvider({ children }) {
+  const { audio: settings } = useSettings()
   const [isMusicPlaying, setMusicPlaying] = useState(true)
-  const [musicVolume, setMusicVolume] = useState(-12)
+
   let synths = []
-  
+
   function stopMusic() {
     setMusicPlaying(false)
     Tone.Transport.stop()
     Tone.Transport.cancel(0)
-    synths.forEach((synth)=>{
-      synth.dispose();
+    synths.forEach(synth => {
+      synth.dispose()
     })
   }
 
@@ -23,21 +25,21 @@ export function MusicProvider({ children }) {
     stopMusic()
 
     const song = Songlist(songName)
-    
+
     setMusicPlaying(true)
     if (song && Tone.Transport.state === 'stopped') {
       song.tracks.forEach((track, index) => {
         synths[index] = new Tone.Synth().toDestination()
-        synths[index].volume.value = musicVolume;
+        synths[index].volume.value = settings.musicVolume
         const part = new Tone.Part((time, note) => {
           synths[index].triggerAttackRelease(
             note.name,
             note.duration,
             time,
             note.velocity
-          )
+          );
         }, track.notes).start(0)
-        part.loop = false;
+        part.loop = false
       })
       Tone.Transport.start()
     }

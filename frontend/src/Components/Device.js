@@ -1,10 +1,12 @@
 import styled from 'styled-components'
+
 import { Clamp, Lerp, PercentageToHEX } from '../Utils/MathFunctions'
+import { useSettings } from '../Contexts/SettingsContext'
 
-export default function Device(props) {
-  const { brightness = 50, children } = props
+export default function Device({ children }) {
+  const settings = useSettings()
 
-  const brightnessClamp = Clamp(7, 100, brightness)
+  const brightnessClamp = Clamp(7, 100, settings.screenBrightness)
   const brightnessHEX = PercentageToHEX(brightnessClamp)
   const brightnessLerp = Lerp(60, 80, brightnessClamp)
 
@@ -33,7 +35,7 @@ const ScreenStyled = styled.div`
     #7e914a var(--brightness),
     #8c9d47 100%
   );
-  border: .4vh solid #6e3838;
+  border: 0.4vh solid #6e3838;
   border-bottom: 0;
   border-right: 0;
   border-radius: 1vh;

@@ -1,21 +1,27 @@
 import { useState } from 'react'
 import styled from 'styled-components'
 
-import Device from './Components/Device'
-import Screen1 from './Components/Screen1'
-import Screen2 from './Components/Screen2'
+import { useStateMachine } from './Contexts/StateMachineContext'
+
+import { useScreen } from './Contexts/ScreenContext'
 import { useMusic } from './Contexts/MusicContext'
+
+import TwoScreenController from './Components/TwoScreenController'
+
+import Start from './Pages/Start'
+import Settings from './Pages/Settings'
 
 function Pokedex() {
   const music = useMusic()
+  const screen = useScreen()
+  const state = useStateMachine()
 
   const [started, setStarted] = useState(false)
 
-  const [brightness, setBrightness] = useState(50)
-
   function handleStart() {
     setStarted(true)
-    music.playMusic('pallet')
+    music.playMusic('titlescreen')
+    state.Start()
   }
 
   return (
@@ -29,16 +35,14 @@ function Pokedex() {
         )}
 
         {started && (
-          <>
-            <Device brightness={brightness}>
-              <Screen1/>
-            </Device>
-            <Device brightness={brightness}>
-              <div className='hinge1' />
-              <div className='hinge2' />
-              <Screen2/>
-            </Device>
-          </>
+          <TwoScreenController
+            screen1={screen.screen1}
+            screen2={screen.screen2}
+            
+          >
+            <Settings />
+            <Start />
+          </TwoScreenController>
         )}
       </Container>
     </>
